@@ -7,12 +7,12 @@ defaults:
   - scheduler: plateau
   - model: basic_fastrcnn
   - callbacks: callbacks
-  - private: default
+  - private: custom
   - data: data
   - augmentation: basic_augs
 
 general:
   save_dir: logs/
-  workspace: erlemar
-  project_name: wheat
+  workspace: r1ck29
+  project_name: wheat_v2
   device: cuda

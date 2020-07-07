@@ -1,4 +1,4 @@
 data:
-  folder_path: f:/wheat
-  num_workers: 0
+  folder_path: /home/rick/Dropbox/python_projects/data_science/Kaggle/global_wheat_detection/input/global-wheat-detection
+  num_workers: 4
   batch_size: 4

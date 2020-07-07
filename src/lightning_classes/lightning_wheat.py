@@ -3,7 +3,6 @@ from typing import Dict
 import pytorch_lightning as pl
 import torch
 from omegaconf import DictConfig
-from torch.utils.data import Dataset
 
 from src.utils.coco_eval import CocoEvaluator
 from src.utils.coco_utils import get_coco_api_from_dataset, _get_iou_types
@@ -59,7 +58,8 @@ class LitWheat(pl.LightningModule):
         optimizer = load_obj(self.cfg.optimizer.class_name)(self.model.parameters(), **self.cfg.optimizer.params)
         scheduler = load_obj(self.cfg.scheduler.class_name)(optimizer, **self.cfg.scheduler.params)
 
-        return [optimizer], [{'scheduler': scheduler, 'interval': self.cfg.scheduler.step}]
+        return [optimizer], [
+            {'scheduler': scheduler, 'monitor': 'val_loss', 'interval': self.cfg.scheduler.step}]  # added monitor
 
     def training_step(self, batch, batch_idx):
         images, targets, image_ids = batch
@@ -80,6 +80,16 @@ class LitWheat(pl.LightningModule):
 
         return {}
 
+    # def validation_epoch_end(self, outputs):
+    #     self.coco_evaluator.accumulate()
+    #     self.coco_evaluator.summarize()
+    #     # coco main metric
+    #     metric = self.coco_evaluator.coco_eval['bbox'].stats[0] #map, map50 = cocoEval.stats[:2]  # update results (mAP@0.5:0.95, mAP@0.5)
+    #     metric = torch.as_tensor(metric)
+    #     # val_loss_mean = torch.stack([x['val_loss'] for x in outputs]).mean()
+    #     tensorboard_logs = {'main_score': metric, 'val_loss': val_loss_mean}
+    #     # return {'val_score': metric, 'val_loss': val_loss_mean, 'log': tensorboard_logs, 'progress_bar': tensorboard_logs}
+    #     return {'val_score': metric, 'log': tensorboard_logs, 'progress_bar': tensorboard_logs} #val_loss
     def validation_epoch_end(self, outputs):
         self.coco_evaluator.accumulate()
         self.coco_evaluator.summarize()
