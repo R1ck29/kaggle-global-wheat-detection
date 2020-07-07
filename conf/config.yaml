@@ -16,3 +16,10 @@ general:
   workspace: r1ck29
   project_name: wheat_v2
   device: cuda
+
+hydra:
+  run:
+    dir: outputs/${now:%Y_%m_%d_%H_%M_%S}
+  sweep:
+    dir: outputs/
+    subdir: ${now:%Y_%m_%d_%H_%M_%S}

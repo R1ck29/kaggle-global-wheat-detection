@@ -35,6 +35,7 @@ def load_obj(obj_path: str, default_obj_path: str = '') -> Any:
 
 def set_seed(seed: int = 666) -> None:
     np.random.seed(seed)
+    os.environ['PYTHONHASHSEED'] = str(seed)
     random.seed(seed)
     torch.backends.cudnn.benchmark = False
     torch.backends.cudnn.deterministic = True
@@ -128,3 +129,23 @@ def flatten_omegaconf(d, sep='_'):
     # obj = {k: v for k, v in obj.items()}
 
     return obj
+
+
+def freeze_until(net, param_name: str = None):
+    """
+    Freeze net until param_name
+
+    https://opendatascience.slack.com/archives/CGK4KQBHD/p1588373239292300?thread_ts=1588105223.275700&cid=CGK4KQBHD
+
+    Args:
+        net:
+        param_name:
+
+    Returns:
+
+    """
+    found_name = False
+    for name, params in net.named_parameters():
+        if name == param_name:
+            found_name = True
+        params.requires_grad = found_name
