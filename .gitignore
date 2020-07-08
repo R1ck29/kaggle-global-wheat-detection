@@ -29,8 +29,8 @@ wheels/
 .installed.cfg
 *.egg
 MANIFEST
-.idea/
-.flask8
+.idea
+.flake8
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
