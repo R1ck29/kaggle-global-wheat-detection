@@ -13,8 +13,6 @@ from src.utils.utils import set_seed, save_useful_info, flatten_omegaconf
 
 warnings.filterwarnings('ignore')
 
-warnings.filterwarnings("ignore")
-
 
 def run(cfg: DictConfig) -> None:
     """
@@ -29,7 +27,7 @@ def run(cfg: DictConfig) -> None:
 
     model = LitWheat(hparams=hparams, cfg=cfg)
 
-    early_stopping = pl.callbacks.EarlyStopping(**cfg.callbacks.early_stopping.params)
+    # early_stopping = pl.callbacks.EarlyStopping(**cfg.callbacks.early_stopping.params)
     model_checkpoint = pl.callbacks.ModelCheckpoint(**cfg.callbacks.model_checkpoint.params)
     lr_logger = pl.callbacks.LearningRateLogger()
 
@@ -48,7 +46,7 @@ def run(cfg: DictConfig) -> None:
 
     trainer = pl.Trainer(
         logger=[tb_logger, comet_logger, json_logger],
-        early_stop_callback=early_stopping,
+        # early_stop_callback=early_stopping,
         checkpoint_callback=model_checkpoint,
         callbacks=[lr_logger],
         **cfg.trainer,

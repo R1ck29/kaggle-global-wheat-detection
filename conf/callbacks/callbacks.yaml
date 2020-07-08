@@ -1,43 +1,17 @@
-# callbacks:
-#   early_stopping:
-#     class_name: pl.callbacks.EarlyStopping
-#     params:
-#       monitor: ${training.metric}
-#       patience: 50
-#       mode: min
-
-#   model_checkpoint:
-#     class_name: pl.callbacks.ModelCheckpoint
-#     params:
-#       monitor: ${training.metric}
-#       save_top_k: 1
-#       filepath: saved_models/
-
 callbacks:
-  early_stopping:
-    class_name: pl.callbacks.EarlyStopping
-    params:
-      monitor: ${training.metric}
-      patience: 30
-      mode: max
-      verbose: True
-
   model_checkpoint:
     class_name: pl.callbacks.ModelCheckpoint
     params:
       monitor: ${training.metric}
       save_top_k: 1
-      filepath: saved_models/
+      filepath: saved_models/ # saved_models/{epoch}_{main_score:.4f}
+      mode: ${training.mode}
       verbose: True
-      mode: max
 
-
-# callbacks:
-#   model_checkpoint:
-#     class_name: pl.callbacks.ModelCheckpoint
-#     params:
-#       monitor: ${training.metric}
-#       save_top_k: 1
-#       filepath: saved_models/
-#       verbose: True
-#       mode: max
+  # early_stopping:
+  #   class_name: pl.callbacks.EarlyStopping
+  #   params:
+  #     monitor: ${training.metric}
+  #     patience: 30
+  #     mode: ${training.mode}
+  #     verbose: True
